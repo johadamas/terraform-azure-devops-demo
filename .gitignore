@@ -1,0 +1,14 @@
+# Ignore Terraform directories and files
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars
+*.tfstate*
+crash.log
+*.tfplan
+
+# My random notes
+_secrets.txt
+terraform.tfvars
+_azure-pipelines.txt
