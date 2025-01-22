@@ -65,6 +65,23 @@ resource "azurerm_key_vault" "keyvault" {
       "Delete"
     ]
   }
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = var.service_principal_object_id # Add the service principal object ID here
+
+    key_permissions = [
+      "Get",
+      "List",
+      "Delete"
+    ]
+
+    secret_permissions = [
+      "Get",
+      "List",
+      "Set",
+      "Delete"
+    ]
+  }
 }
 
 # Store storage account key in Key Vault
@@ -123,7 +140,7 @@ resource "databricks_cluster" "cluster" {
   custom_tags = {
     "ResourceClass" = "SingleNode"
   }
-  single_user_name        = var.user_email
+  single_user_name = var.user_email
 }
 
 # Define paths to your Databricks notebooks
@@ -206,7 +223,7 @@ resource "databricks_job" "etl_pipeline" {
       source        = "WORKSPACE"
     }
     existing_cluster_id = databricks_cluster.cluster.id
-    timeout_seconds     = 0 
+    timeout_seconds     = 0
   }
 
   task {
@@ -220,7 +237,7 @@ resource "databricks_job" "etl_pipeline" {
       source        = "WORKSPACE"
     }
     existing_cluster_id = databricks_cluster.cluster.id
-    timeout_seconds     = 0 
+    timeout_seconds     = 0
   }
 
   task {
